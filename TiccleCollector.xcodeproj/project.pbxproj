@@ -10,22 +10,9 @@
 		2224F5832CFD52FB00475A1A /* TiccleCollector.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TiccleCollector.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		2224F5952CFD52FE00475A1A /* Exceptions for "TiccleCollector" folder in "TiccleCollector" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Info.plist,
-			);
-			target = 2224F5822CFD52FB00475A1A /* TiccleCollector */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		2224F5852CFD52FB00475A1A /* TiccleCollector */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				2224F5952CFD52FE00475A1A /* Exceptions for "TiccleCollector" folder in "TiccleCollector" target */,
-			);
 			path = TiccleCollector;
 			sourceTree = "<group>";
 		};
