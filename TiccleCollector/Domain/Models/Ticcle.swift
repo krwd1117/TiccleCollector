@@ -1,3 +1,5 @@
+import Foundation
+
 struct Ticcle {
     let id: String
     let title: String

@@ -10,9 +10,22 @@
 		2224F5832CFD52FB00475A1A /* TiccleCollector.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TiccleCollector.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		6BB4C7C22CFF05CD00E827DC /* Exceptions for "TiccleCollector" folder in "TiccleCollector" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Application/Info.plist,
+			);
+			target = 2224F5822CFD52FB00475A1A /* TiccleCollector */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		2224F5852CFD52FB00475A1A /* TiccleCollector */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				6BB4C7C22CFF05CD00E827DC /* Exceptions for "TiccleCollector" folder in "TiccleCollector" target */,
+			);
 			path = TiccleCollector;
 			sourceTree = "<group>";
 		};
@@ -134,7 +147,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 5TQSUXNFZV;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = TiccleCollector/Info.plist;
+				INFOPLIST_FILE = TiccleCollector/Application/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -166,7 +179,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 5TQSUXNFZV;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = TiccleCollector/Info.plist;
+				INFOPLIST_FILE = TiccleCollector/Application/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
