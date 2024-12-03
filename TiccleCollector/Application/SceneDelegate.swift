@@ -15,15 +15,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         window = UIWindow(windowScene: windowScene)
         
-        // 이미 예산이 설정되어 있는지 확인
-        if UserDefaults.standard.double(forKey: "dailyBudget") > 0 {
-            let mainViewController = MainViewController()
-            let navigationController = UINavigationController(rootViewController: mainViewController)
-            window?.rootViewController = navigationController
-        } else {
-            let setupViewController = SetupViewController()
-            window?.rootViewController = setupViewController
-        }
+        let mainViewController = MainViewController()
+        let navigationController = UINavigationController(rootViewController: mainViewController)
+        window?.rootViewController = navigationController
         
         window?.makeKeyAndVisible()
     }

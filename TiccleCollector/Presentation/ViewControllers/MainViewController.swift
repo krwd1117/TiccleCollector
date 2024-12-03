@@ -2,51 +2,46 @@ import UIKit
 import Combine
 
 class MainViewController: UIViewController {
-    private var cancellables = Set<AnyCancellable>()
     private let budgetManager = BudgetManager.shared
+    private var cancellables = Set<AnyCancellable>()
     
     // MARK: - UI Components
     private let dateLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 16, weight: .medium)
-        label.textAlignment = .center
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    
-    private let remainingBudgetLabel: UILabel = {
-        let label = UILabel()
-        label.font = .systemFont(ofSize: 32, weight: .bold)
-        label.textAlignment = .center
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-    
-    private let spentAmountLabel: UILabel = {
-        let label = UILabel()
-        label.font = .systemFont(ofSize: 16, weight: .regular)
-        label.textAlignment = .center
+        label.font = .preferredFont(forTextStyle: .subheadline)
         label.textColor = .secondaryLabel
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
-    private let addExpenseButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("지출 입력", for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 18, weight: .semibold)
-        button.backgroundColor = .systemBlue
-        button.setTitleColor(.white, for: .normal)
-        button.layer.cornerRadius = 8
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
+    private let budgetLabel: UILabel = {
+        let label = UILabel()
+        label.font = .preferredFont(forTextStyle: .largeTitle)
+        label.adjustsFontSizeToFitWidth = true
+        label.minimumScaleFactor = 0.5
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
     }()
     
-    private let editBudgetButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("예산 수정", for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 16)
+    private let spentLabel: UILabel = {
+        let label = UILabel()
+        label.font = .preferredFont(forTextStyle: .body)
+        label.textColor = .secondaryLabel
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private lazy var addExpenseButton: UIButton = {
+        var config = UIButton.Configuration.filled()
+        config.cornerStyle = .capsule
+        config.title = "지출 추가"
+        config.image = UIImage(systemName: "plus.circle.fill")
+        config.imagePadding = 8
+        config.buttonSize = .large
+        
+        let button = UIButton(configuration: config)
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.addTarget(self, action: #selector(addExpenseButtonTapped), for: .touchUpInside)
         return button
     }()
     
@@ -55,78 +50,86 @@ class MainViewController: UIViewController {
         super.viewDidLoad()
         setupUI()
         setupBindings()
-        setupActions()
-        updateDateLabel()
+        updateDate()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        updateBudgetInfo()
     }
     
     // MARK: - Setup
     private func setupUI() {
         view.backgroundColor = .systemBackground
-        title = "티끌모아티끌"
+        title = "예산"
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            image: UIImage(systemName: "calendar"),
+            style: .plain,
+            target: self,
+            action: #selector(historyButtonTapped)
+        )
         
         let stackView = UIStackView(arrangedSubviews: [
             dateLabel,
-            remainingBudgetLabel,
-            spentAmountLabel
+            budgetLabel,
+            spentLabel
         ])
         stackView.axis = .vertical
-        stackView.spacing = 8
+        stackView.spacing = 4
+        stackView.alignment = .center
         stackView.translatesAutoresizingMaskIntoConstraints = false
         
         view.addSubview(stackView)
         view.addSubview(addExpenseButton)
-        view.addSubview(editBudgetButton)
         
         NSLayoutConstraint.activate([
             stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 50),
+            stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -50),
             
             addExpenseButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            addExpenseButton.bottomAnchor.constraint(equalTo: editBudgetButton.topAnchor, constant: -20),
-            addExpenseButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.8),
-            addExpenseButton.heightAnchor.constraint(equalToConstant: 50),
-            
-            editBudgetButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            editBudgetButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -30)
+            addExpenseButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -24),
+            addExpenseButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.6)
         ])
     }
     
     private func setupBindings() {
-        budgetManager.$currentBudget
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] budget in
-                self?.updateUI(with: budget)
+        budgetManager.budgetPublisher
+            .sink { [weak self] _ in
+                self?.updateBudgetInfo()
             }
             .store(in: &cancellables)
     }
     
-    private func setupActions() {
-        addExpenseButton.addTarget(self, action: #selector(addExpenseButtonTapped), for: .touchUpInside)
-        editBudgetButton.addTarget(self, action: #selector(editBudgetButtonTapped), for: .touchUpInside)
-    }
-    
-    // MARK: - UI Updates
-    private func updateUI(with budget: Budget?) {
-        guard let budget = budget else { return }
-        
-        remainingBudgetLabel.text = formatCurrency(budget.remaining)
-        spentAmountLabel.text = "지출: \(formatCurrency(budget.spent))"
-        
-        // 예산 초과시 빨간색으로 표시
-        remainingBudgetLabel.textColor = budget.remaining < 0 ? .systemRed : .label
-    }
-    
-    private func updateDateLabel() {
+    // MARK: - Updates
+    private func updateDate() {
         let formatter = DateFormatter()
-        formatter.dateFormat = "M월 d일"
+        formatter.dateFormat = "M월 d일 EEEE"
+        formatter.locale = Locale(identifier: "ko_KR")
         dateLabel.text = formatter.string(from: Date())
     }
     
-    private func formatCurrency(_ amount: Double) -> String {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .decimal
-        formatter.maximumFractionDigits = 0
-        return "\(formatter.string(from: NSNumber(value: amount)) ?? "0")원"
+    private func updateBudgetInfo() {
+        guard let budget = budgetManager.budget(for: Date()) else {
+            budgetLabel.text = "예산 미설정"
+            spentLabel.text = ""
+            return
+        }
+        
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .decimal
+        numberFormatter.maximumFractionDigits = 0
+        
+        let remaining = budget.amount - budget.spent
+        let remainingText = numberFormatter.string(from: NSNumber(value: abs(remaining))) ?? "0"
+        
+        // 남은 예산 표시
+        budgetLabel.text = "₩\(remainingText)"
+        budgetLabel.textColor = remaining < 0 ? .systemRed : .label
+        
+        // 지출 정보 표시
+        let spentText = numberFormatter.string(from: NSNumber(value: budget.spent)) ?? "0"
+        spentLabel.text = "지출: ₩\(spentText)"
     }
     
     // MARK: - Actions
@@ -136,9 +139,8 @@ class MainViewController: UIViewController {
         present(navigationController, animated: true)
     }
     
-    @objc private func editBudgetButtonTapped() {
-        let editBudgetVC = EditBudgetViewController()
-        let navigationController = UINavigationController(rootViewController: editBudgetVC)
-        present(navigationController, animated: true)
+    @objc private func historyButtonTapped() {
+        let historyVC = HistoryViewController()
+        navigationController?.pushViewController(historyVC, animated: true)
     }
 }
