@@ -1,6 +1,6 @@
 import Foundation
 
-struct Budget: Codable, Identifiable {
+struct Expense: Codable, Identifiable {
     let id: UUID
     let amount: Decimal
     let date: Date
@@ -9,7 +9,7 @@ struct Budget: Codable, Identifiable {
     init(
         id: UUID = UUID(),
         amount: Decimal,
-        date: Date,
+        date: Date = Date(),
         createdAt: Date = Date()
     ) {
         self.id = id
@@ -19,25 +19,7 @@ struct Budget: Codable, Identifiable {
     }
 }
 
-extension Budget {
-    struct Status {
-        let isOverSpent: Bool
-        let hasCarryOver: Bool
-        let remainingAmount: Decimal
-        
-        init(
-            isOverSpent: Bool = false,
-            hasCarryOver: Bool = false,
-            remainingAmount: Decimal = 0
-        ) {
-            self.isOverSpent = isOverSpent
-            self.hasCarryOver = hasCarryOver
-            self.remainingAmount = remainingAmount
-        }
-    }
-}
-
-extension Budget {
+extension Expense {
     var dateComponents: DateComponents {
         Calendar.current.dateComponents([.year, .month, .day], from: date)
     }
