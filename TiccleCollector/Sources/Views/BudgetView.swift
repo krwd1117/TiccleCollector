@@ -24,8 +24,14 @@ struct BudgetView: View {
                     .padding(.horizontal)
                     
                     // 오늘의 지출 내역
-                    TodayExpensesList(expenses: viewModel.todayExpenses)
-                        .padding(.horizontal)
+                    if !viewModel.todayExpenses.isEmpty {
+                        TodayExpensesList(expenses: viewModel.todayExpenses)
+                            .padding(.horizontal)
+                    } else {
+                        Text("오늘의 지출 내역이 없습니다")
+                            .foregroundColor(.gray)
+                            .padding()
+                    }
                 }
             }
             .navigationTitle("티끌모아티끌")
@@ -58,43 +64,40 @@ struct DailyBudgetCard: View {
     let remainingBudget: Double
     
     var body: some View {
-        VStack(spacing: 15) {
+        VStack(spacing: 16) {
             Text("오늘의 예산")
                 .font(.headline)
                 .foregroundColor(.gray)
             
-            Text(remainingBudget.formatted(.currency(code: "KRW")))
-                .font(.system(size: 40, weight: .bold))
+            Text(String(format: "₩%.0f", dailyBudget))
+                .font(.system(size: 36, weight: .bold))
             
-            HStack {
-                VStack(alignment: .leading) {
-                    Text("일일 예산")
+            HStack(spacing: 20) {
+                VStack {
+                    Text("사용금액")
                         .font(.caption)
                         .foregroundColor(.gray)
-                    Text(dailyBudget.formatted(.currency(code: "KRW")))
-                        .font(.subheadline)
+                    Text(String(format: "₩%.0f", todaySpent))
+                        .font(.headline)
                 }
                 
-                Spacer()
+                Divider()
+                    .frame(height: 30)
                 
-                VStack(alignment: .trailing) {
-                    Text("지출")
+                VStack {
+                    Text("남은금액")
                         .font(.caption)
                         .foregroundColor(.gray)
-                    Text(todaySpent.formatted(.currency(code: "KRW")))
-                        .font(.subheadline)
-                        .foregroundColor(.red)
+                    Text(String(format: "₩%.0f", remainingBudget))
+                        .font(.headline)
+                        .foregroundColor(remainingBudget >= 0 ? .primary : .red)
                 }
             }
-            
-            // 프로그레스 바
-            ProgressView(value: todaySpent, total: dailyBudget)
-                .tint(todaySpent > dailyBudget ? .red : .blue)
         }
         .padding()
         .background(Color(.systemBackground))
-        .cornerRadius(15)
-        .shadow(radius: 5)
+        .cornerRadius(12)
+        .shadow(radius: 2)
     }
 }
 

@@ -4,7 +4,6 @@ import SwiftData
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
     @StateObject private var budgetViewModel: BudgetViewModel
-    @State private var isOnboarding = true
     
     init(modelContext: ModelContext) {
         let viewModel = BudgetViewModel(modelContext: modelContext)
@@ -15,7 +14,7 @@ struct ContentView: View {
         Group {
             if !budgetViewModel.isOnboardingCompleted {
                 OnboardingView(
-                    isOnboarding: $isOnboarding, 
+                    isOnboarding: .constant(true), 
                     modelContext: modelContext,
                     parentViewModel: budgetViewModel
                 )

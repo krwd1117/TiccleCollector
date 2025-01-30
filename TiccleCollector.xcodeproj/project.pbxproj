@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		1FCC4CFA81B5110018D84245 /* TiccleCollectorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 060405E963A74B83D9629AEF /* TiccleCollectorApp.swift */; };
 		26D49028E38ED651497A8A95 /* TuistAssets+TiccleCollector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8178BB4CC724A88588175A4D /* TuistAssets+TiccleCollector.swift */; };
+		28CDBA652D4BD04F0026E22E /* Expense.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28CDBA642D4BD04F0026E22E /* Expense.swift */; };
 		374A0B72390ABF5A30C07212 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E6DD4795F0ECF9FBD6DE239A /* Preview Assets.xcassets */; };
 		3891D2274E0CF50B0021E501 /* TiccleCollectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91451CA51E08BB6DBA8635DD /* TiccleCollectorTests.swift */; };
 		6ED6F5319E2835230408C5E8 /* Budget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 89B11E776BCBE70A502AA8B4 /* Budget.swift */; };
@@ -61,6 +62,7 @@
 		0F10535DCB46EBE1CB60E5E4 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		1DE3341D45F1A5CA28404322 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		258068BC3C789EE7713DF19C /* BudgetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BudgetView.swift; sourceTree = "<group>"; };
+		28CDBA642D4BD04F0026E22E /* Expense.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Expense.swift; sourceTree = "<group>"; };
 		33A55481E1AAACA67050B79F /* CalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarView.swift; sourceTree = "<group>"; };
 		5689A461B7F85380DF9A12E1 /* TiccleCollector.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TiccleCollector.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		59108BE77A3FBD7F09AD679F /* ExpenseInputSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExpenseInputSheet.swift; sourceTree = "<group>"; };
@@ -170,6 +172,7 @@
 			isa = PBXGroup;
 			children = (
 				89B11E776BCBE70A502AA8B4 /* Budget.swift */,
+				28CDBA642D4BD04F0026E22E /* Expense.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -320,6 +323,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				28CDBA652D4BD04F0026E22E /* Expense.swift in Sources */,
 				26D49028E38ED651497A8A95 /* TuistAssets+TiccleCollector.swift in Sources */,
 				B13631579CF1F5C56F146CB6 /* TuistBundle+TiccleCollector.swift in Sources */,
 				F953DE4B002FC2334C5A1A76 /* ContentView.swift in Sources */,

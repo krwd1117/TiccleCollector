@@ -6,10 +6,9 @@ import SwiftData
 struct OnboardingView: View {
     @Environment(\.modelContext) private var modelContext
     @StateObject private var viewModel: BudgetViewModel
-    @State private var monthlyIncomeText: String = ""
+    @State private var dailyBudgetText: String = ""
     @Binding var isOnboarding: Bool
     
-    // ContentView의 budgetViewModel을 받아옴
     let parentViewModel: BudgetViewModel
     
     init(isOnboarding: Binding<Bool>, modelContext: ModelContext, parentViewModel: BudgetViewModel) {
@@ -32,45 +31,33 @@ struct OnboardingView: View {
             Spacer()
             
             VStack(alignment: .leading, spacing: 10) {
-                Text("월 수입을 입력해주세요")
+                Text("하루 최대 지출 금액을 입력해주세요")
                     .font(.headline)
                 
-                TextField("예: 3,000,000", text: $monthlyIncomeText)
+                TextField("예: 30000", text: $dailyBudgetText)
                     .keyboardType(.numberPad)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .onChange(of: monthlyIncomeText) { newValue in
-                        // 숫자만 입력되도록 필터링
-                        monthlyIncomeText = newValue.filter { "0123456789".contains($0) }
-                    }
-            }
-            .padding()
-            
-            Button(action: {
-                if let income = Double(monthlyIncomeText) {
-                    viewModel.setMonthlyBudget(from: income)
-                    // 부모 뷰모델도 업데이트
-                    parentViewModel.isOnboardingCompleted = true
-                    parentViewModel.monthlyIncome = income
-                    parentViewModel.monthlyBudget = income * 0.7
-                    parentViewModel.budget = viewModel.budget
-                    
-                    isOnboarding = false
-                }
-            }) {
-                Text("시작하기")
-                    .font(.headline)
-                    .foregroundColor(.white)
-                    .frame(maxWidth: .infinity)
                     .padding()
-                    .background(Color.blue)
-                    .cornerRadius(10)
+                
+                Button(action: {
+                    if let dailyBudget = Double(dailyBudgetText) {
+                        parentViewModel.setDailyBudget(dailyBudget)
+                        parentViewModel.isOnboardingCompleted = true
+                    }
+                }) {
+                    Text("시작하기")
+                        .frame(maxWidth: .infinity)
+                        .padding()
+                        .background(Color.blue)
+                        .foregroundColor(.white)
+                        .cornerRadius(10)
+                }
+                .disabled(dailyBudgetText.isEmpty)
             }
             .padding()
-            .disabled(monthlyIncomeText.isEmpty)
             
             Spacer()
         }
-        .padding()
     }
 }
 
